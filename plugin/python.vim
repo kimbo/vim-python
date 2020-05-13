@@ -30,10 +30,8 @@ function! python#Breakpoint()
 	endif
 endfunction
 
-function! python#Comment()
-	let l:mode = mode()
-	echo l:mode
-	if l:mode == "V"
+function! python#Comment(visual)
+	if a:visual == 1
 		execute 'normal! gv'
 		let firstline = line("'<")
 		let lastline = line("'>")
@@ -62,10 +60,12 @@ function! python#Comment()
 endfunction
 
 command! PyRun call python#Run()
-command! PyBreakpoint call python#Breakpoint()
-command! -range -bar PyComment call python#Comment()
+command! PyBreakpoint call python#Breakpoin(
+command! -range -bar PyCommentVisual call python#Comment(1)
+command! -range -bar PyCommentNormal call python#Comment(0)
 
-autocmd Filetype python nnoremap <F4> :PyBreakpoint <CR>
-autocmd Filetype python nnoremap <F5> :PyRun <CR>
-autocmd Filetype python xnoremap <c-_> :PyComment <CR>
+autocmd BufNewFile,BufReadPost *.py nnoremap <F4> :PyBreakpoint <CR>
+autocmd BufNewFile,BufReadPost *.py nnoremap <F5> :PyRun <CR>
+autocmd BufNewFile,BufReadPost *.py nnoremap <c-_> :PyCommentNormal <CR>
+autocmd BufNewFile,BufReadPost *.py xnoremap <c-_> :PyCommentVisual <CR>
 
