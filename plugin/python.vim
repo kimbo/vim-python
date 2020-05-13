@@ -60,7 +60,7 @@ function! python#Comment(visual)
 endfunction
 
 command! PyRun call python#Run()
-command! PyBreakpoint call python#Breakpoin(
+command! PyBreakpoint call python#Breakpoint()
 command! -range -bar PyCommentVisual call python#Comment(1)
 command! -range -bar PyCommentNormal call python#Comment(0)
 
