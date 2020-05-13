@@ -1,5 +1,3 @@
-let g:breakpoints = {}
-
 function! python#Error(msg)
 	execute 'normal! \<Esc>'
 	echohl ErrorMsg
