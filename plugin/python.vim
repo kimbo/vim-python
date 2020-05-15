@@ -13,7 +13,7 @@ function! python#Success(msg)
 endfunction
 
 function! python#SetArgs()
-	let args = input('Arguments: ')
+	let args = input('Arguments: ', "", "file")
 	let g:pyargs = split(args, '\s+')
 	call python#Success('Arguments set')
 endfunction
