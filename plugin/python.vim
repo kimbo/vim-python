@@ -4,14 +4,38 @@ function! python#Error(msg)
 	echomsg 'python-vim: ' . a:msg
 	echohl None
 endfunction
- 
-function! python#Run()
+
+function! python#Success(msg)
+	execute 'normal! \<Esc>'
+	echohl Function
+	echomsg 'python-vim: ' . a:msg
+	echohl None
+endfunction
+
+function! python#SetArgs()
+	let args = input('Arguments: ')
+	let g:pyargs = split(args, '\s+')
+	call python#Success('Arguments set')
+endfunction
+
+function! python#Run(...)
+	let cmd = ':terminal'
 	if filereadable('./venv/bin/python')
-		let pythonbin = 'venv/bin/python'
-		:terminal ./venv/bin/python "%"
+		let cmd = cmd . " " . './venv/bin/python'
 	else
-		:terminal python "%"
+		let cmd = cmd . " " . 'python'
 	endif
+	let i = 0
+	while i < argc()
+		echo "" . i . ": " . argv(i)
+		let cmd = cmd . " " . argv(i)
+		let i = i + 1
+	endwhile
+	if exists('g:pyargs') && len(g:pyargs) > 0
+		let extraargs = join(g:pyargs, " ")
+		let cmd = cmd . " " . extraargs
+	endif
+	execute cmd
 endfunction
 
 function! python#Breakpoint()
@@ -20,6 +44,7 @@ function! python#Breakpoint()
 	if line =~ '^\s*import pdb; pdb.set_trace().*'
 		execute ':' . lineno - 1
 		d
+		call python#Success('Breakpoint removed')
 	else
 		if line =~ '^.*:\s*$'
 			let extra = '    '
@@ -27,6 +52,7 @@ function! python#Breakpoint()
 			let extra = ''
 		endif
 		call append(lineno - 1, substitute(line, '^\(\s*\).*$', '\1' . extra . 'import pdb; pdb.set_trace()', ''))
+		call python#Success('Breakpoint set')
 	endif
 endfunction
 
@@ -59,13 +85,22 @@ function! python#Comment(visual)
 	endwhile
 endfunction
 
-command! PyRun call python#Run()
+function! python#SetArgsAndRun()
+	execute ':PySetArgs'
+	execute ':PyRun'
+endfunction
+
+command! PyRun call python#Run(<f-args>)
 command! PyBreakpoint call python#Breakpoint()
 command! -range -bar PyCommentVisual call python#Comment(1)
 command! -range -bar PyCommentNormal call python#Comment(0)
+command! PySetArgs call python#SetArgs()
+command! PyRunWithArgs call python#SetArgsAndRun()
 
+autocmd BufNewFile,BufReadPost *.py nnoremap <F3> :PySetArgs <CR>
 autocmd BufNewFile,BufReadPost *.py nnoremap <F4> :PyBreakpoint <CR>
 autocmd BufNewFile,BufReadPost *.py nnoremap <F5> :PyRun <CR>
+autocmd BufNewFile,BufReadPost *.py nnoremap <F6> :PyRunWithArgs <CR>
 autocmd BufNewFile,BufReadPost *.py nnoremap <c-_> :PyCommentNormal <CR>
 autocmd BufNewFile,BufReadPost *.py xnoremap <c-_> :PyCommentVisual <CR>
 
