@@ -25,7 +25,8 @@ function! python#Run(...)
 	else
 		let cmd = cmd . " " . 'python'
 	endif
-	let i = 0
+	let cmd = cmd . " " . "%"
+	let i = 1
 	while i < argc()
 		echo "" . i . ": " . argv(i)
 		let cmd = cmd . " " . argv(i)
@@ -35,6 +36,7 @@ function! python#Run(...)
 		let extraargs = join(g:pyargs, " ")
 		let cmd = cmd . " " . extraargs
 	endif
+	call python#Success(cmd)
 	execute cmd
 endfunction
 
