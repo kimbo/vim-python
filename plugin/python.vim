@@ -76,10 +76,8 @@ function! python#Comment(visual)
 	while currentline <= lastline
 		let line = getline(currentline)
 		if line =~ '^\s*#.*'
-			":s/^\(\s*\)#\s*/\1/
 			let changedline = substitute(line, '^\(\s*\)#\s*', '\1', '')
 		else
-			":s/^\(\s*\)/\1# /
 			let changedline = substitute(line, '^\(\s*\)', '\1# ', '')
 		endif
 		call setline(currentline, changedline)
