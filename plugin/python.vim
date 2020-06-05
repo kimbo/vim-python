@@ -76,9 +76,9 @@ function! python#Comment(visual)
 	while currentline <= lastline
 		let line = getline(currentline)
 		if line =~ '^\s*#.*'
-			let changedline = substitute(line, '^\(\s*\)#\s*', '\1', '')
+			let changedline = substitute(line, '^\(\s*\)#', '\1', '')
 		else
-			let changedline = substitute(line, '^\(\s*\)', '\1# ', '')
+			let changedline = substitute(line, '^', '#', '')
 		endif
 		call setline(currentline, changedline)
 		let currentline = currentline + 1
@@ -97,10 +97,13 @@ command! -range -bar PyCommentNormal call python#Comment(0)
 command! PySetArgs call python#SetArgs()
 command! PyRunWithArgs call python#SetArgsAndRun()
 
-autocmd BufNewFile,BufReadPost *.py nnoremap <F3> :PySetArgs <CR>
-autocmd BufNewFile,BufReadPost *.py nnoremap <F4> :PyBreakpoint <CR>
-autocmd BufNewFile,BufReadPost *.py nnoremap <F5> :PyRun <CR>
-autocmd BufNewFile,BufReadPost *.py nnoremap <F6> :PyRunWithArgs <CR>
-autocmd BufNewFile,BufReadPost *.py nnoremap <c-_> :PyCommentNormal <CR>
-autocmd BufNewFile,BufReadPost *.py xnoremap <c-_> :PyCommentVisual <CR>
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SUGGESTED MAPPINGS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" autocmd BufNewFile,BufReadPost *.py nnoremap <F3> :PySetArgs <CR>
+" autocmd BufNewFile,BufReadPost *.py nnoremap <F4> :PyBreakpoint <CR>
+" autocmd BufNewFile,BufReadPost *.py nnoremap <F5> :PyRun <CR>
+" autocmd BufNewFile,BufReadPost *.py nnoremap <F6> :PyRunWithArgs <CR>
+" autocmd BufNewFile,BufReadPost *.py nnoremap <c-_> :PyCommentNormal <CR>
+" autocmd BufNewFile,BufReadPost *.py xnoremap <c-_> :PyCommentVisual <CR>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
