@@ -22,9 +22,11 @@ autocmd BufNewFile,BufReadPost *.py xnoremap <c-_> :PyCommentVisual <CR>
 
 You can customize these to map to whatever keys you want.
 
-# Features
+After that, open up a Python file and start trying out the functions in the next section.
 
-Here's a table that describes the features/functions that vim-python provides.
+# Functions
+
+Here's a table that describes the functions that vim-python provides.
 
 Function name | Description | Suggested mapping from above
 ---|---|---
