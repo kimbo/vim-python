@@ -35,3 +35,9 @@ Function name | Description | Suggested mapping from above
 `:PyRun` | Run the current file as a Python script. If ./venv/bin/python exists, it will be the interpreter chosen. Otherwise, the default `python` is used | **F5**
 `:PyRunWithArgs` | Set the arguments to be run, and then run the current file as a Python script. This combines `:PySetArgs` and `:PyRun` for convenience | **F6**
 `:PyCommentNormal` and `:PyCommentVisual` | Toggle comment on the current line or visual selection | **Ctrl+/**
+
+
+# Helpful tips
+
+- After running `:PySetArgs` or `PyRunWithArgs`, those args will be used as the default arguments until you exit vim or change the arguments
+- To quickly modify your previous arguments (e.g. to add an extra `--some-param`), run `:PySetArgs` or `:PyRunWithArgs` and then use the up arrow to view previous args.
